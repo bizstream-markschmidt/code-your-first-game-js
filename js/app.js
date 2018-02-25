@@ -34,7 +34,7 @@ const loseMusic          = new Audio('sounds/fail.mp3');
 // Gameplay Constants
 ////////////////////////////////////////////////////////////////////////////////
 const WINNING_SCORE       = 3;
-const AI_DIFFICULTY       = 8; // the number of pixels the paddle moves
+const AI_DIFFICULTY       = 20; // the number of pixels the paddle moves
 const MSG_WIN             = 'Good Game, dude';
 const MSG_LOSE            = 'that was kind of lame...';
 const BTN_TEXT_PLAY_AGAIN = 'play again';
@@ -75,18 +75,13 @@ var computerScore = 0;
 var winMusicHasPlayed  = false;
 var loseMusicHasPlayed = false;
 var showingWinScreen   = false;
+var mousePos = {x: 0, y: 0}; // used for debugging
 
 ////////////////////////////////////////////////////////////////////////////////
 // Paddle Variables
 ////////////////////////////////////////////////////////////////////////////////
 var playerPaddleY   = PADDLE_START_Y; // Paddle's starting Y position
 var computerPaddleY = PADDLE_START_Y; // Paddle's starting Y position
-
-////////////////////////////////////////////////////////////////////////////////
-// Mouse Variables, I made these global so I could debug them
-////////////////////////////////////////////////////////////////////////////////
-var mouseX = 0;
-var mouseY = 0;
 
 ////////////////////////////////////////////////////////////////////////////////
 // Ball Variables
@@ -126,7 +121,7 @@ window.onload = function() {
 
   // Make the player paddle follow the mouse
   canvas.addEventListener('mousemove', function(evt) {
-    var mousePos = calculateMousePos(evt);
+    mousePos = calculateMousePos(evt);
     playerPaddleY = mousePos.y - (PADDLE_HEIGHT/2);
   });
 }
@@ -306,12 +301,12 @@ function drawBall(leftX, topY, size, drawColor) {
 function calculateMousePos(evt) {
   var rect = canvas.getBoundingClientRect();
   var root = document.documentElement;
-  mouseX = evt.clientX - rect.left - root.scrollLeft;
-  mouseY = evt.clientY - rect.top - root.scrollTop;
+  var mouseX = evt.clientX - rect.left - root.scrollLeft;
+  var mouseY = evt.clientY - rect.top - root.scrollTop;
 
   return {
-    x:mouseX,
-    y:mouseY
+    x: mouseX,
+    y: mouseY
   };
 }
 
@@ -347,7 +342,7 @@ function updateDebugInfo() {
   debug.innerHTML  = "<pre>"+
     "ballSpeedX:"+ alignRight(ballSpeedX.toFixed(1)) +"    ballSpeedY:"+ alignRight(ballSpeedY.toFixed(1)) +"\n" +
     "     ballX:"+ alignRight(ballX.toFixed(0))      +"         ballY:"+ alignRight(ballY.toFixed(0)) +"\n" +
-    "    mouseX:"+ alignRight(mouseX.toFixed(0))     +"        mouseY:"+ alignRight(mouseY.toFixed(0)) +"\n" +
+    "mousePos.x:"+ alignRight(mousePos.x.toFixed(0)) +"    mousePos.y:"+ alignRight(mousePos.y.toFixed(0)) +"\n" +
     "                 playerPaddleY:"+ alignRight(playerPaddleY.toFixed(0)) +"\n" +
     "               computerPaddleY:"+ alignRight(computerPaddleY.toFixed(0)) +"\n" +
     "</pre>";

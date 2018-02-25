@@ -112,12 +112,18 @@ window.onload = function() {
 
 
 function updateDebugInfo() {
+  function alignRight(val) {
+    // 5 character max
+    val = "     "+ val;
+    return val.substr(val.length - 5);
+  }
+
   debug.innerHTML  = "<pre>"+
-    "Ball Speed X, Y:     "+ ballSpeedX.toFixed(1) +", "+ ballSpeedY.toFixed(1) +"\n" +
-    "Ball Position X, Y:  "+ ballX.toFixed(0) +", "+ ballY.toFixed(0) +"\n" +
-    "Mouse Position X, Y: "+ mouseX.toFixed(0) +", "+ mouseY.toFixed(0) +"\n" +
-    "playerPaddleY:       "+ playerPaddleY.toFixed(0) +"\n" +
-    "computerPaddleY:     "+ computerPaddleY.toFixed(0) +"\n" +
+    "ballSpeedX:"+ alignRight(ballSpeedX.toFixed(1)) +"    ballSpeedY:"+ alignRight(ballSpeedY.toFixed(1)) +"\n" +
+    "     ballX:"+ alignRight(ballX.toFixed(0))      +"         ballY:"+ alignRight(ballY.toFixed(0)) +"\n" +
+    "    mouseX:"+ alignRight(mouseX.toFixed(0))     +"        mouseY:"+ alignRight(mouseY.toFixed(0)) +"\n" +
+    "                 playerPaddleY:"+ alignRight(playerPaddleY.toFixed(0)) +"\n" +
+    "               computerPaddleY:"+ alignRight(computerPaddleY.toFixed(0)) +"\n" +
     "</pre>";
 }
 

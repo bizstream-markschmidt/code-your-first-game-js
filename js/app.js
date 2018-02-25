@@ -1,12 +1,12 @@
 ////////////////////////////////////////////////////////////////////////////////
 // Color Constants  -- see http://www.color-hex.com/ for more options
 ////////////////////////////////////////////////////////////////////////////////
-const baseColor    = 'white';
-const canvasColor  = '#5e871f';
+const baseColor    = 'white';   // foreground
+const canvasColor  = '#5e871f'; // background
 const ballColor    = 'white';
 const netColor     = 'white';
-const playerPaddleColor   = '#C9F227';
-const computerPaddleColor = '#00F8FB';
+const playerPaddleColor   = '#C9F227'; // left paddle
+const computerPaddleColor = '#00F8FB'; // right paddle
 
 ////////////////////////////////////////////////////////////////////////////////
 // Sound Constants  -- more here: https://freesound.org/people/NoiseCollector/packs/254/
@@ -35,7 +35,7 @@ const loseMusic          = new Audio('sounds/fail.mp3');
 ////////////////////////////////////////////////////////////////////////////////
 const WINNING_SCORE       = 3;
 const AI_DIFFICULTY       = 8; // the number of pixels the paddle moves
-const MSG_WIN             = 'GG, bruh';
+const MSG_WIN             = 'Good Game, dude';
 const MSG_LOSE            = 'that was kind of lame...';
 const BTN_TEXT_PLAY_AGAIN = 'play again';
 const FPS                 = 30; // Frames per second (animation speed)
@@ -43,17 +43,17 @@ const FPS                 = 30; // Frames per second (animation speed)
 ////////////////////////////////////////////////////////////////////////////////
 // Net Constants
 ////////////////////////////////////////////////////////////////////////////////
-const NET_WIDTH = 5;
-const NET_LINE_HEIGHT = 30;
+const NET_WIDTH        = 5;
+const NET_LINE_HEIGHT  = 30;
 const NET_LINE_SPACING = 60;
 
 ////////////////////////////////////////////////////////////////////////////////
 // Paddle Constants
 ////////////////////////////////////////////////////////////////////////////////
-const PADDLE_WIDTH = 10;
-const PADDLE_HEIGHT = 100;
+const PADDLE_WIDTH           = 10;
+const PADDLE_HEIGHT          = 100;
 const PADDLE_SPACE_FROM_SIDE = 15;
-const PADDLE_START_Y = 200;
+const PADDLE_START_Y         = 200;
 
 ////////////////////////////////////////////////////////////////////////////////
 // Ball Constants
@@ -70,11 +70,11 @@ const BALL_SIZE          = 10; // Ball's diameter in pixels
 var canvas;
 var canvasContext;
 var debug;
-var winMusicHasPlayed = false;
-var loseMusicHasPlayed = false;
-var playerScore = 0;
+var playerScore   = 0;
 var computerScore = 0;
-var showingWinScreen = false;
+var winMusicHasPlayed  = false;
+var loseMusicHasPlayed = false;
+var showingWinScreen   = false;
 
 ////////////////////////////////////////////////////////////////////////////////
 // Paddle Variables
@@ -144,7 +144,7 @@ function moveComputerPaddle() {
   }
 }
 
-// Move ball in thesame direction (ballSpeed)
+// Move ball a little bit more in the same direction (ballSpeed)
 function moveBall() {
   ballX += ballSpeedX;
   ballY += ballSpeedY;
@@ -162,6 +162,7 @@ function moveEverything() {
 
   // Bounce or reset for the PLAYER SIDE of the screen 
   if (ballX < PADDLE_SPACE_FROM_SIDE + PADDLE_WIDTH + BALL_SIZE) {
+    // Did the ball hit the PLAYER paddle?
     if (ballY > playerPaddleY && ballY < playerPaddleY+PADDLE_HEIGHT) {
       paddleSound.play();
       
@@ -172,6 +173,7 @@ function moveEverything() {
       ballSpeedY++;
       ballSpeedY = deltaY * 0.35;
     }
+    // Did the ball go PAST the PLAYER paddle?
     else if (ballX < 0) {
       computerScoreSound.play();
       computerScore++;
@@ -181,6 +183,7 @@ function moveEverything() {
 
   // Bounce or reset for the COMPUTER SIDE of the screen
   if (ballX > canvas.width - PADDLE_SPACE_FROM_SIDE - PADDLE_WIDTH - BALL_SIZE) {
+    // Did the ball hit the COMPUTER paddle?
     if (ballY > computerPaddleY && ballY < computerPaddleY+PADDLE_HEIGHT) {
       paddleSound.play();
 
@@ -191,6 +194,7 @@ function moveEverything() {
       ballSpeedY++;
       ballSpeedY = deltaY * 0.35;
     }
+    // Did the ball go PAST the COMPUTER paddle?
     else if (ballX > canvas.width) {
       playerScoreSound.play();
       playerScore++;
@@ -203,6 +207,7 @@ function moveEverything() {
   if (ballY > canvas.height - BALL_SIZE || ballY < BALL_SIZE) {
     ballSpeedY = -ballSpeedY;
   }
+
   updateDebugInfo();
 }
 
@@ -219,9 +224,36 @@ function ballReset() {
 
 // Draw the net
 function drawNet() {
-  for (var i=0; i<canvas.height; i+=NET_LINE_SPACING) {
+  // draw a dashed line
+  for (var i = 0; i < canvas.height; i += NET_LINE_SPACING) {
     drawRect(canvas.width/2-1, i, NET_WIDTH, NET_LINE_HEIGHT, netColor);
   }
+}
+
+// Draw Win Screen
+function drawWinScreen() {
+  if (playerScore >= WINNING_SCORE) {
+    bgMusic.pause();
+
+    if (!winMusicHasPlayed) {
+      winMusic.play();
+      winMusicHasPlayed = true;
+    }
+    canvasContext.fillText("Player Won!",200,200);
+    canvasContext.fillText(MSG_WIN,200,300);
+  }
+  else if (computerScore >= WINNING_SCORE) {
+    bgMusic.pause();
+
+    if (!loseMusicHasPlayed) {
+      loseMusic.play();
+      loseMusicHasPlayed = true;
+    }
+    canvasContext.fillText("Computer Won...",200,200);
+    canvasContext.fillText(MSG_LOSE,200,300);
+  }
+
+  canvasContext.fillText(BTN_TEXT_PLAY_AGAIN,300,500);
 }
 
 // Draw everything
@@ -232,31 +264,10 @@ function drawEverything() {
 
   canvasContext.fillStyle = baseColor;
 
+  // should we draw the winning screen?
   if (showingWinScreen) {
-    if (playerScore >= WINNING_SCORE) {
-      bgMusic.pause();
-
-      if (!winMusicHasPlayed) {
-        winMusic.play();
-        winMusicHasPlayed = true;
-      }
-      canvasContext.fillText("Player Won!",200,200);
-      canvasContext.fillText(MSG_WIN,200,300);
-    }
-    else if (computerScore >= WINNING_SCORE) {
-      bgMusic.pause();
-
-      if (!loseMusicHasPlayed) {
-        loseMusic.play();
-        loseMusicHasPlayed = true;
-      }
-      canvasContext.fillText("Computer Won...",200,200);
-      canvasContext.fillText(MSG_LOSE,200,300);
-    }
-
-    
-    canvasContext.fillText(BTN_TEXT_PLAY_AGAIN,300,500);
-    return;
+    drawWinScreen();
+    return; // exit, do not do the rest
   }
 
   // Draw net
@@ -271,9 +282,10 @@ function drawEverything() {
   // Draw ball
   drawBall(ballX, ballY, BALL_SIZE, ballColor);
 
+  // Draw Scores
   canvasContext.font = "50px Arial";
-  canvasContext.fillText(playerScore,200,100);
-  canvasContext.fillText(computerScore,canvas.width-200,100);
+  canvasContext.fillText(playerScore, 200, 100);
+  canvasContext.fillText(computerScore, canvas.width-200, 100);
 }
 
 // Function for drawing rectangles

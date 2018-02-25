@@ -50,7 +50,7 @@ const FPS                 = 30; // Frames per second (animation speed)
 ////////////////////////////////////////////////////////////////////////////////
 // Net Constants
 ////////////////////////////////////////////////////////////////////////////////
-const NET_WIDTH        = 9000000000000000000000000;
+const NET_WIDTH        = 10;
 const NET_LINE_HEIGHT  = 30;
 const NET_LINE_SPACING = 60;
 

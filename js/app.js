@@ -1,26 +1,33 @@
 ////////////////////////////////////////////////////////////////////////////////
 // Color Constants  -- see http://www.color-hex.com/ for more options
 ////////////////////////////////////////////////////////////////////////////////
-const baseColor    = 'white';   // foreground
-const canvasColor  = '#5e871f'; // background
-const ballColor    = 'white';
-const netColor     = 'white';
-const playerPaddleColor   = '#C9F227'; // left paddle
-const computerPaddleColor = '#00F8FB'; // right paddle
+const baseColor    = '#CF9893';   // foreground
+const canvasColor  = '#3B3B58'; // background
+const ballColor    = '#bc7c9ce';
+const netColor     = '#BC7C9Ce';
+const playerPaddleColor   = '#A96DA3'; // left paddle
+const computerPaddleColor = '#7A5980'; // right paddle
 
+
+////////////////////////////////////////////////////////////////////////////////
+// Image Constants
+////////////////////////////////////////////////////////////////////////////////
+let ballImage = new Image();
+ballImage.src = 'images/mya-ball.png';
 ////////////////////////////////////////////////////////////////////////////////
 // Sound Constants  -- more here: https://freesound.org/people/NoiseCollector/packs/254/
 ////////////////////////////////////////////////////////////////////////////////
-const paddleSound        = new Audio('sounds/bounce.mp3'); // sounds/pong.mp3
-const bgMusic            = new Audio('sounds/music.mp3');
-const playerScoreSound   = new Audio('sounds/score.mp3');
-const computerScoreSound = new Audio('sounds/computer-score.mp3');
-const winMusic           = new Audio('sounds/win.mp3');
-const loseMusic          = new Audio('sounds/fail.mp3');
+const paddleSound        = new Audio('sounds/smb_bump.wav'); // sounds/pong.mp3
+const bgMusic            = new Audio('sounds/01-main-theme-overworld.mp3');
+const playerScoreSound   = new Audio('sounds/smb_coin.wav');
+const computerScoreSound = new Audio('sounds/smb_breakblock.wav');
+const winMusic           = new Audio('sounds/smb_stage_clear.wav');
+const loseMusic          = new Audio('sounds/smb_gameover.wav');
 /*
   Options:
   - sounds/blue.mp3
   - sounds/bounce.mp3
+  - sounds/pong.mp3
   - sounds/computer-score.mp3
   - sounds/fail.mp3
   - sounds/guitar.wav
@@ -35,24 +42,24 @@ const loseMusic          = new Audio('sounds/fail.mp3');
 ////////////////////////////////////////////////////////////////////////////////
 const WINNING_SCORE       = 3;
 const AI_DIFFICULTY       = 8; // the number of pixels the paddle moves
-const MSG_WIN             = 'Good Game, dude';
-const MSG_LOSE            = 'that was kind of lame...';
+const MSG_WIN             = 'awesome job!';
+const MSG_LOSE            = 'ha ha ha ha ha ha haboo boo boo boo boo hoohoohoohoohoohoo';
 const BTN_TEXT_PLAY_AGAIN = 'play again';
 const FPS                 = 30; // Frames per second (animation speed)
 
 ////////////////////////////////////////////////////////////////////////////////
 // Net Constants
 ////////////////////////////////////////////////////////////////////////////////
-const NET_WIDTH        = 5;
+const NET_WIDTH        = 9000000000000000000000000;
 const NET_LINE_HEIGHT  = 30;
 const NET_LINE_SPACING = 60;
 
 ////////////////////////////////////////////////////////////////////////////////
 // Paddle Constants
 ////////////////////////////////////////////////////////////////////////////////
-const PADDLE_WIDTH           = 10;
+const PADDLE_WIDTH           = 5;
 const PADDLE_HEIGHT          = 100;
-const PADDLE_SPACE_FROM_SIDE = 15;
+const PADDLE_SPACE_FROM_SIDE = 20;
 const PADDLE_START_Y         = 200;
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -60,9 +67,9 @@ const PADDLE_START_Y         = 200;
 ////////////////////////////////////////////////////////////////////////////////
 const BALL_START_X       = 50;
 const BALL_START_Y       = 50;
-const BALL_START_SPEED_X = 10;
-const BALL_START_SPEED_Y = 4;
-const BALL_SIZE          = 10; // Ball's diameter in pixels
+const BALL_START_SPEED_X = 12;
+const BALL_START_SPEED_Y = 12;
+const BALL_SIZE          = 50; // Ball's diameter in pixels
 
 ////////////////////////////////////////////////////////////////////////////////
 // Set Global Variables
@@ -292,10 +299,13 @@ function drawRect(leftX, topY, width, height, drawColor) {
 
 // Function for drawing balls
 function drawBall(leftX, topY, size, drawColor) {
+
   canvasContext.fillStyle = drawColor;
   canvasContext.beginPath();
   canvasContext.arc(leftX, topY, size, 0, Math.PI*2, true);
   canvasContext.fill();
+
+  canvasContext.drawImage(ballImage, leftX - (BALL_SIZE), topY- (BALL_SIZE));
 }
 
 // Calculate where the mouse is

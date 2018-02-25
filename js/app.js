@@ -1,14 +1,6 @@
-// Set Global Variables
-var canvas;
-var canvasContext;
-var debug;
-var winMusicHasPlayed = false;
-var loseMusicHasPlayed = false;
-var playerScore = 0;
-var computerScore = 0;
-var showingWinScreen = false;
-
+////////////////////////////////////////////////////////////////////////////////
 // Color Constants  -- see http://www.color-hex.com/ for more options
+////////////////////////////////////////////////////////////////////////////////
 const baseColor    = 'white';
 const canvasColor  = '#5e871f';
 const ballColor    = 'white';
@@ -16,7 +8,15 @@ const netColor     = 'white';
 const playerPaddleColor   = '#C9F227';
 const computerPaddleColor = '#00F8FB';
 
+////////////////////////////////////////////////////////////////////////////////
 // Sound Constants  -- more here: https://freesound.org/people/NoiseCollector/packs/254/
+////////////////////////////////////////////////////////////////////////////////
+const paddleSound        = new Audio('sounds/bounce.mp3'); // sounds/pong.mp3
+const bgMusic            = new Audio('sounds/music.mp3');
+const playerScoreSound   = new Audio('sounds/score.mp3');
+const computerScoreSound = new Audio('sounds/computer-score.mp3');
+const winMusic           = new Audio('sounds/win.mp3');
+const loseMusic          = new Audio('sounds/fail.mp3');
 /*
   Options:
   - sounds/blue.mp3
@@ -29,55 +29,76 @@ const computerPaddleColor = '#00F8FB';
   - sounds/score.mp3
   - sounds/win.mp3
 */
-const paddleSound        = new Audio('sounds/bounce.mp3'); // sounds/pong.mp3
-const bgMusic            = new Audio('sounds/music.mp3');
-const playerScoreSound   = new Audio('sounds/score.mp3');
-const computerScoreSound = new Audio('sounds/computer-score.mp3');
-const winMusic           = new Audio('sounds/win.mp3');
-const loseMusic          = new Audio('sounds/fail.mp3');
 
+////////////////////////////////////////////////////////////////////////////////
 // Gameplay Constants
+////////////////////////////////////////////////////////////////////////////////
 const WINNING_SCORE       = 3;
-const AI_DIFFICULTY       = 8;
+const AI_DIFFICULTY       = 8; // the number of pixels the paddle moves
 const MSG_WIN             = 'GG, bruh';
 const MSG_LOSE            = 'that was kind of lame...';
 const BTN_TEXT_PLAY_AGAIN = 'play again';
 const FPS                 = 30; // Frames per second (animation speed)
 
+////////////////////////////////////////////////////////////////////////////////
 // Net Constants
+////////////////////////////////////////////////////////////////////////////////
 const NET_WIDTH = 5;
 const NET_LINE_HEIGHT = 30;
 const NET_LINE_SPACING = 60;
 
+////////////////////////////////////////////////////////////////////////////////
 // Paddle Constants
+////////////////////////////////////////////////////////////////////////////////
 const PADDLE_WIDTH = 10;
 const PADDLE_HEIGHT = 100;
 const PADDLE_SPACE_FROM_SIDE = 15;
 const PADDLE_START_Y = 200;
 
+////////////////////////////////////////////////////////////////////////////////
 // Ball Constants
+////////////////////////////////////////////////////////////////////////////////
 const BALL_START_X       = 50;
 const BALL_START_Y       = 50;
 const BALL_START_SPEED_X = 10;
 const BALL_START_SPEED_Y = 4;
 const BALL_SIZE          = 10; // Ball's diameter in pixels
 
+////////////////////////////////////////////////////////////////////////////////
+// Set Global Variables
+////////////////////////////////////////////////////////////////////////////////
+var canvas;
+var canvasContext;
+var debug;
+var winMusicHasPlayed = false;
+var loseMusicHasPlayed = false;
+var playerScore = 0;
+var computerScore = 0;
+var showingWinScreen = false;
 
+////////////////////////////////////////////////////////////////////////////////
 // Paddle Variables
+////////////////////////////////////////////////////////////////////////////////
 var playerPaddleY   = PADDLE_START_Y; // Paddle's starting Y position
 var computerPaddleY = PADDLE_START_Y; // Paddle's starting Y position
 
+////////////////////////////////////////////////////////////////////////////////
 // Mouse Variables, I made these global so I could debug them
+////////////////////////////////////////////////////////////////////////////////
 var mouseX = 0;
 var mouseY = 0;
 
+////////////////////////////////////////////////////////////////////////////////
 // Ball Variables
+////////////////////////////////////////////////////////////////////////////////
 var ballX = BALL_START_X; // Ball's starting X position
 var ballY = BALL_START_Y; // Ball's starting Y position
 var ballSpeedX = BALL_START_SPEED_X; // Ball's speed along the X axis
 var ballSpeedY = BALL_START_SPEED_Y; // Ball's speed along the Y axis
 
-// Functions ////////////////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
+// Functions ///////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
 
 // Run functions after the window has loaded
 window.onload = function() {

@@ -34,7 +34,7 @@ const loseMusic          = new Audio('sounds/fail.mp3');
 // Gameplay Constants
 ////////////////////////////////////////////////////////////////////////////////
 const WINNING_SCORE       = 3;
-const AI_DIFFICULTY       = 20; // the number of pixels the paddle moves
+const AI_DIFFICULTY       = 8; // the number of pixels the paddle moves
 const MSG_WIN             = 'Good Game, dude';
 const MSG_LOSE            = 'that was kind of lame...';
 const BTN_TEXT_PLAY_AGAIN = 'play again';
@@ -110,11 +110,11 @@ window.onload = function() {
   }, 1000/FPS);
 
   // Start music
+  bgMusic.play();
   bgMusic.addEventListener('ended', function() {
     this.currentTime = 0;
     this.play();
   }, false);
-  bgMusic.play();
 
   // Restart the game when you click
   canvas.addEventListener('mousedown', handleMouseClick);
@@ -279,6 +279,7 @@ function drawEverything() {
 
   // Draw Scores
   canvasContext.font = "50px Arial";
+  canvasContext.fillStyle = baseColor;
   canvasContext.fillText(playerScore, 200, 100);
   canvasContext.fillText(computerScore, canvas.width-200, 100);
 }
